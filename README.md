@@ -10,8 +10,8 @@ package main
 import (
     "log"
 
-    tls "github.com/Titanium-ctrl/utls"
-    "github.com/Titanium-ctrl/cclient"
+    tls "github.com/Carcraftz/utls"
+    "github.com/Carcraftz/cclient"
 )
 
 func main() {
