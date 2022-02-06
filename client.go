@@ -3,13 +3,12 @@ package cclient
 import (
 	"time"
 
-	"github.com/Viper-AIO/carhttp/cookiejar"
+	http "github.com/Carcraftz/fhttp"
+	 "github.com/Carcraftz/fhttp/cookiejar"
 
 	"golang.org/x/net/proxy"
 
-	http "github.com/Viper-AIO/carhttp"
-
-	utls "github.com/Viper-AIO/utls"
+	utls "github.com/Carcraftz/utls"
 )
 
 func NewClient(clientHello utls.ClientHelloID, proxyUrl string, allowRedirect bool, timeout time.Duration) (http.Client, error) {
