@@ -2,7 +2,6 @@ package cclient
 
 import (
 	"context"
-	"crypto/tls"
 	"errors"
 	"fmt"
 	"net"
