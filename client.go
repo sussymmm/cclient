@@ -3,10 +3,13 @@ package cclient
 import (
 	"time"
 
-	http "github.com/Carcraftz/fhttp"
+	"github.com/Viper-AIO/carhttp/cookiejar"
+
 	"golang.org/x/net/proxy"
 
-	utls "github.com/Carcraftz/utls"
+	http "github.com/Viper-AIO/carhttp"
+
+	utls "github.com/Viper-AIO/utls"
 )
 
 func NewClient(clientHello utls.ClientHelloID, proxyUrl string, allowRedirect bool, timeout time.Duration) (http.Client, error) {
@@ -14,11 +17,15 @@ func NewClient(clientHello utls.ClientHelloID, proxyUrl string, allowRedirect bo
 		dialer, err := newConnectDialer(proxyUrl)
 		if err != nil {
 			if allowRedirect {
+				cJar, _ := cookiejar.New(nil)
 				return http.Client{
+					Jar:     cJar,
 					Timeout: time.Second * timeout,
 				}, err
 			}
+			cJar, _ := cookiejar.New(nil)
 			return http.Client{
+				Jar:     cJar,
 				Timeout: time.Second * timeout,
 				CheckRedirect: func(req *http.Request, via []*http.Request) error {
 					return http.ErrUseLastResponse
@@ -26,12 +33,16 @@ func NewClient(clientHello utls.ClientHelloID, proxyUrl string, allowRedirect bo
 			}, err
 		}
 		if allowRedirect {
+			cJar, _ := cookiejar.New(nil)
 			return http.Client{
+				Jar:       cJar,
 				Transport: newRoundTripper(clientHello, dialer),
 				Timeout:   time.Second * timeout,
 			}, nil
 		}
+		cJar, _ := cookiejar.New(nil)
 		return http.Client{
+			Jar:       cJar,
 			Transport: newRoundTripper(clientHello, dialer),
 			Timeout:   time.Second * timeout,
 			CheckRedirect: func(req *http.Request, via []*http.Request) error {
@@ -40,12 +51,16 @@ func NewClient(clientHello utls.ClientHelloID, proxyUrl string, allowRedirect bo
 		}, nil
 	} else {
 		if allowRedirect {
+			cJar, _ := cookiejar.New(nil)
 			return http.Client{
+				Jar:       cJar,
 				Transport: newRoundTripper(clientHello, proxy.Direct),
 				Timeout:   time.Second * timeout,
 			}, nil
 		}
+		cJar, _ := cookiejar.New(nil)
 		return http.Client{
+			Jar:       cJar,
 			Transport: newRoundTripper(clientHello, proxy.Direct),
 			Timeout:   time.Second * timeout,
 			CheckRedirect: func(req *http.Request, via []*http.Request) error {
